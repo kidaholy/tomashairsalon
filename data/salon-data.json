@@ -14,11 +14,11 @@
     { "label": "Contact", "href": "#contact" }
   ],
   "hero": {
-    "title": "Transform Your Look",
-    "subtitle": "Experience luxury hair care with our expert stylists",
+    "title": "Order Management",
+    "subtitle": "",
     "primaryButton": {
       "text": "Login",
-      "href": "#login"
+      "href": "/dashboard"
     }
   },
   "about": {

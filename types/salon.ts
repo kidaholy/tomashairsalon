@@ -107,3 +107,18 @@ export interface SalonData {
   contact: Contact;
   footer: Footer;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  categoryId: string;
+  available: boolean;
+}
