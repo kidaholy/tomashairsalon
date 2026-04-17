@@ -1,0 +1,178 @@
+{
+  "salon": {
+    "name": "Tomas",
+    "tagline": "Premium Hair Care & Styling",
+    "description": "Experience luxury hair care with our expert stylists",
+    "established": 2008
+  },
+  "navigation": [
+    { "label": "Home", "href": "#home" },
+    { "label": "About", "href": "#about" },
+    { "label": "Services", "href": "#services" },
+    { "label": "Gallery", "href": "#gallery" },
+    { "label": "Team", "href": "#team" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "hero": {
+    "title": "Transform Your Look",
+    "subtitle": "Experience luxury hair care with our expert stylists",
+    "primaryButton": {
+      "text": "Login",
+      "href": "#login"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "description1": "Welcome to Luxe Hair Salon, where beauty meets expertise. With over 15 years of experience, our team of professional stylists is dedicated to creating stunning transformations that enhance your natural beauty.",
+    "description2": "We use only premium products and cutting-edge techniques to ensure you leave our salon feeling confident and radiant. Your satisfaction is our passion.",
+    "stats": [
+      { "number": "15+", "label": "Years Experience" },
+      { "number": "5000+", "label": "Happy Clients" },
+      { "number": "20+", "label": "Expert Stylists" }
+    ]
+  },
+  "services": [
+    {
+      "id": "haircut",
+      "name": "Haircuts & Styling",
+      "description": "Expert cuts and styling for all hair types and lengths",
+      "price": 50,
+      "icon": "✂️",
+      "duration": "45-60 min"
+    },
+    {
+      "id": "color",
+      "name": "Color & Highlights",
+      "description": "Professional coloring services from subtle to bold",
+      "price": 120,
+      "icon": "🎨",
+      "duration": "2-3 hours"
+    },
+    {
+      "id": "treatment",
+      "name": "Hair Treatment",
+      "description": "Deep conditioning and restorative treatments",
+      "price": 80,
+      "icon": "💆",
+      "duration": "60-90 min"
+    },
+    {
+      "id": "bridal",
+      "name": "Bridal Packages",
+      "description": "Complete bridal hair styling for your special day",
+      "price": 200,
+      "icon": "💍",
+      "duration": "2-4 hours"
+    },
+    {
+      "id": "keratin",
+      "name": "Keratin Treatment",
+      "description": "Smooth, frizz-free hair that lasts for months",
+      "price": 250,
+      "icon": "✨",
+      "duration": "2-3 hours"
+    },
+    {
+      "id": "extensions",
+      "name": "Hair Extensions",
+      "description": "Premium hair extensions for added volume and length",
+      "price": 300,
+      "icon": "👑",
+      "duration": "3-4 hours"
+    }
+  ],
+  "team": [
+    {
+      "id": 1,
+      "name": "Sarah Johnson",
+      "role": "Senior Stylist",
+      "bio": "15+ years experience in cutting and coloring",
+      "specialties": ["Haircuts", "Coloring", "Styling"],
+      "image": "/images/team/sarah.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Emma Williams",
+      "role": "Color Specialist",
+      "bio": "Expert in balayage and creative color",
+      "specialties": ["Balayage", "Highlights", "Creative Color"],
+      "image": "/images/team/emma.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Michael Chen",
+      "role": "Hair Therapist",
+      "bio": "Specialist in hair restoration treatments",
+      "specialties": ["Treatments", "Restoration", "Keratin"],
+      "image": "/images/team/michael.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Olivia Brown",
+      "role": "Bridal Expert",
+      "bio": "Creating perfect bridal looks for 10+ years",
+      "specialties": ["Bridal", "Updos", "Special Events"],
+      "image": "/images/team/olivia.jpg"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Jessica M.",
+      "rating": 5,
+      "text": "Amazing experience! Sarah transformed my hair exactly how I wanted. The salon is beautiful and the staff is incredibly professional.",
+      "service": "Color & Highlights"
+    },
+    {
+      "id": 2,
+      "name": "Amanda R.",
+      "rating": 5,
+      "text": "Best salon in town! The color work is exceptional and my hair has never looked healthier. Highly recommend!",
+      "service": "Hair Treatment"
+    },
+    {
+      "id": 3,
+      "name": "Rachel T.",
+      "rating": 5,
+      "text": "I've been coming here for 3 years and I'm always satisfied. The team truly cares about their clients.",
+      "service": "Haircuts & Styling"
+    }
+  ],
+  "gallery": [
+    { "id": 1, "title": "Balayage Transformation", "category": "Color", "image": "/images/gallery/1.jpg" },
+    { "id": 2, "title": "Modern Bob Cut", "category": "Haircut", "image": "/images/gallery/2.jpg" },
+    { "id": 3, "title": "Bridal Updo", "category": "Bridal", "image": "/images/gallery/3.jpg" },
+    { "id": 4, "title": "Vivid Color", "category": "Color", "image": "/images/gallery/4.jpg" },
+    { "id": 5, "title": "Extensions", "category": "Extensions", "image": "/images/gallery/5.jpg" },
+    { "id": 6, "title": "Keratin Results", "category": "Treatment", "image": "/images/gallery/6.jpg" }
+  ],
+  "contact": {
+    "title": "Book Your Appointment",
+    "subtitle": "Get in touch and let us transform your look",
+    "location": {
+      "address": "123 Beauty Street, Fashion District",
+      "city": "New York, NY 10001"
+    },
+    "phone": "+1 (555) 123-4567",
+    "email": "info@luxesalon.com",
+    "hours": {
+      "weekdays": "Mon - Fri: 9AM - 8PM",
+      "saturday": "Sat: 10AM - 6PM",
+      "sunday": "Sun: Closed"
+    }
+  },
+  "footer": {
+    "description": "Premium hair care services since 2008",
+    "socialLinks": [
+      { "platform": "Facebook", "url": "#" },
+      { "platform": "Instagram", "url": "#" },
+      { "platform": "Twitter", "url": "#" }
+    ],
+    "quickLinks": [
+      { "label": "About Us", "href": "#about" },
+      { "label": "Services", "href": "#services" },
+      { "label": "Gallery", "href": "#gallery" },
+      { "label": "Contact", "href": "#contact" }
+    ]
+  }
+}
