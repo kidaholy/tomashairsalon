@@ -32,7 +32,7 @@ I've converted your app to use MongoDB instead of JSON files. MongoDB works perf
 2. Select your project
 3. Go to **Settings** → **Environment Variables**
 4. Add a new variable:
-   - **Name**: `MONGODB_URI`
+   - **Name**: `MONGODB_URL`
    - **Value**: Your MongoDB connection string
    - **Environment**: Select all (Production, Preview, Development)
 5. Click **Save**
@@ -66,11 +66,11 @@ After deployment, you need to add your initial data:
 
 ## Local Development
 
-For local development, you also need the `MONGODB_URI` environment variable:
+For local development, you also need the `MONGODB_URL` environment variable:
 
 1. Create a `.env.local` file in your project root:
    ```
-   MONGODB_URI=your_mongodb_connection_string_here
+   MONGODB_URL=your_mongodb_connection_string_here
    ```
 
 2. Run your dev server:
@@ -99,7 +99,7 @@ npm run dev
 ## Troubleshooting
 
 ### Error: "MongoDB not configured"
-- Make sure `MONGODB_URI` environment variable is set in Vercel
+- Make sure `MONGODB_URL` environment variable is set in Vercel
 - Check that the connection string is correct
 - Verify MongoDB Atlas allows connections from all IPs (0.0.0.0/0)
 
@@ -110,7 +110,7 @@ npm run dev
 
 ### Data Not Persisting
 - MongoDB should persist data automatically
-- Check if `MONGODB_URI` is correctly set
+- Check if `MONGODB_URL` is correctly set
 - Verify MongoDB Atlas cluster is running
 
 ## Benefits of MongoDB on Vercel
@@ -134,7 +134,7 @@ If you have existing data in `data/salon-data.json`:
 ## Next Steps
 
 1. ✅ Get MongoDB connection string
-2. ✅ Add `MONGODB_URI` to Vercel
+2. ✅ Add `MONGODB_URL` to Vercel
 3. ✅ Push code to Git
 4. ✅ Wait for Vercel deployment
 5. ✅ Test your app
