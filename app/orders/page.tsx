@@ -170,6 +170,25 @@ function OrdersPageInner() {
     }
   };
 
+  const deleteOrder = async (orderId: string) => {
+    if (!confirm('Are you sure you want to delete this order?')) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/json/orders?id=${orderId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        loadData();
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      alert('Failed to delete order');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -427,6 +446,7 @@ function OrdersPageInner() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -480,6 +500,15 @@ function OrdersPageInner() {
                           </span>
                         </td>
                         <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => deleteOrder(order.id)}
+                            className="text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-1 rounded-lg transition-colors text-sm font-medium"
+                            title="Delete Order"
+                          >
+                            Delete
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   {orders.filter(order => {
@@ -513,7 +542,7 @@ function OrdersPageInner() {
                     return true;
                   }).length === 0 && (
                     <tr>
-                      <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
+                      <td colSpan={8} className="px-6 py-8 text-center text-gray-500">
                         No orders found for this period
                       </td>
                     </tr>
