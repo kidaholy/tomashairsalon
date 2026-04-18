@@ -39,6 +39,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadStats();
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(loadStats, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadStats = async () => {
@@ -59,13 +62,94 @@ export default function DashboardPage() {
         revenue: totalRevenue
       });
       
-      setRecentOrders(ordersRes.slice(0, 7));
+      // Sort orders by date (newest first)
+      const sortedOrders = ordersRes.sort((a: Order, b: Order) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      
+      setRecentOrders(sortedOrders);
       setMenuItems(menuRes);
     } catch (error) {
       console.error('Error loading stats:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper to get orders by day of week
+  const getOrdersByDay = () => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const ordersByDay = [0, 0, 0, 0, 0, 0, 0];
+    
+    recentOrders.forEach(order => {
+      const orderDate = new Date(order.createdAt);
+      const dayIndex = orderDate.getDay();
+      ordersByDay[dayIndex]++;
+    });
+    
+    return {
+      labels: days,
+      data: ordersByDay
+    };
+  };
+
+  // Helper to calculate revenue by time period
+  const getRevenueByPeriod = () => {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(todayStart);
+    weekStart.setDate(weekStart.getDate() - todayStart.getDay());
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    let todayRevenue = 0;
+    let weekRevenue = 0;
+    let monthRevenue = 0;
+    
+    recentOrders.forEach(order => {
+      const orderDate = new Date(order.createdAt);
+      if (orderDate >= todayStart) {
+        todayRevenue += order.total;
+      }
+      if (orderDate >= weekStart) {
+        weekRevenue += order.total;
+      }
+      if (orderDate >= monthStart) {
+        monthRevenue += order.total;
+      }
+    });
+    
+    return {
+      labels: ['Today', 'This Week', 'This Month'],
+      data: [todayRevenue, weekRevenue, monthRevenue]
+    };
+  };
+
+  // Helper to get top menu items by usage
+  const getTopMenuItems = () => {
+    const itemCounts: Record<string, { name: string; count: number; price: number }> = {};
+    
+    recentOrders.forEach(order => {
+      order.items.forEach(item => {
+        if (itemCounts[item.menuItemId]) {
+          itemCounts[item.menuItemId].count += item.quantity;
+        } else {
+          itemCounts[item.menuItemId] = {
+            name: item.name,
+            count: item.quantity,
+            price: item.price
+          };
+        }
+      });
+    });
+    
+    const sortedItems = Object.values(itemCounts)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+    
+    return {
+      labels: sortedItems.map(item => item.name),
+      data: sortedItems.map(item => item.count)
+    };
   };
 
   if (loading) {
@@ -136,15 +220,13 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Orders Chart */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Orders Overview</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Orders by Day of Week</h3>
             <Bar
               data={{
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: getOrdersByDay().labels,
                 datasets: [{
-                  label: 'Orders',
-                  data: recentOrders.length > 0 ? 
-                    [3, 5, 2, 8, 6, 4, recentOrders.length] : 
-                    [0, 0, 0, 0, 0, 0, 0],
+                  label: 'Number of Orders',
+                  data: getOrdersByDay().data,
                   backgroundColor: 'rgba(59, 130, 246, 0.5)',
                   borderColor: 'rgba(59, 130, 246, 1)',
                   borderWidth: 2,
@@ -163,16 +245,12 @@ export default function DashboardPage() {
 
           {/* Revenue Distribution */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Revenue Breakdown</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Revenue by Period</h3>
             <Doughnut
               data={{
-                labels: ['Today', 'This Week', 'This Month'],
+                labels: getRevenueByPeriod().labels,
                 datasets: [{
-                  data: [
-                    stats.revenue * 0.15,
-                    stats.revenue * 0.35,
-                    stats.revenue * 0.5
-                  ],
+                  data: getRevenueByPeriod().data,
                   backgroundColor: [
                     'rgba(16, 185, 129, 0.7)',
                     'rgba(59, 130, 246, 0.7)',
@@ -200,28 +278,35 @@ export default function DashboardPage() {
 
         {/* Popular Items Chart */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Popular Menu Items</h3>
-          <Bar
-            data={{
-              labels: menuItems.slice(0, 5).map(item => item.name),
-              datasets: [{
-                label: 'Price ($)',
-                data: menuItems.slice(0, 5).map(item => item.price),
-                backgroundColor: 'rgba(245, 158, 11, 0.5)',
-                borderColor: 'rgba(245, 158, 11, 1)',
-                borderWidth: 2,
-              }]
-            }}
-            options={{
-              indexAxis: 'y' as const,
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top' as const,
+          <h3 className="text-xl font-bold text-gray-800 mb-4">Most Ordered Items</h3>
+          {getTopMenuItems().labels.length > 0 ? (
+            <Bar
+              data={{
+                labels: getTopMenuItems().labels,
+                datasets: [{
+                  label: 'Times Ordered',
+                  data: getTopMenuItems().data,
+                  backgroundColor: 'rgba(245, 158, 11, 0.5)',
+                  borderColor: 'rgba(245, 158, 11, 1)',
+                  borderWidth: 2,
+                }]
+              }}
+              options={{
+                indexAxis: 'y' as const,
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top' as const,
+                  },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <p className="text-lg">No orders yet</p>
+              <p className="text-sm mt-2">Charts will update automatically as orders are created</p>
+            </div>
+          )}
         </div>
       </div>
     </SidebarLayout>
