@@ -107,7 +107,7 @@ function OrdersPageInner() {
       alert('Cart is empty');
       return;
     }
-    setShowPaymentModal(true);
+    completeOrder();
   };
 
   const completeOrder = async () => {
@@ -120,7 +120,7 @@ function OrdersPageInner() {
       tax: 0,
       total,
       status: 'completed',
-      paymentMethod,
+      paymentMethod: 'cash',
       createdAt: new Date().toISOString(),
       cashierName,
     };
@@ -134,7 +134,6 @@ function OrdersPageInner() {
 
       if (res.ok) {
         setCurrentOrder(newOrder);
-        setShowPaymentModal(false);
         setShowReceiptModal(true);
         setCart([]);
         loadData();
@@ -690,60 +689,7 @@ function OrdersPageInner() {
         )}
       </div>
 
-      {/* Payment Modal */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-5 print:hidden">
-          <div className="bg-white rounded-lg p-8 w-full max-w-md">
-            <h3 className="text-2xl font-bold mb-6">Complete Payment</h3>
-            
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Payment Method
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {(['cash', 'card', 'other'] as const).map(method => (
-                  <button
-                    key={method}
-                    onClick={() => setPaymentMethod(method)}
-                    className={`py-3 rounded-lg font-semibold capitalize ${
-                      paymentMethod === method
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {method}
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg mb-6">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
-                <p className="text-sm text-yellow-800 font-medium text-center">It is only for internal operation</p>
-              </div>
-              <div className="flex justify-between text-xl font-bold">
-                <span>Total:</span>
-                <span>{total.toFixed(2)} ETB</span>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={completeOrder}
-                className="flex-1 bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700"
-              >
-                Complete Order
-              </button>
-              <button
-                onClick={() => setShowPaymentModal(false)}
-                className="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Receipt Modal */}
       {showReceiptModal && currentOrder && (
