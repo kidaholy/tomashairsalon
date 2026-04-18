@@ -286,5 +286,25 @@
       "available": true
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "1776513970871",
+      "orderNumber": "#1",
+      "items": [
+        {
+          "menuItemId": "1",
+          "name": "snap",
+          "price": 350,
+          "quantity": 3
+        }
+      ],
+      "subtotal": 1050,
+      "tax": 0,
+      "total": 1050,
+      "status": "completed",
+      "paymentMethod": "cash",
+      "createdAt": "2026-04-18T12:06:10.871Z",
+      "cashierName": ""
+    }
+  ]
 }
