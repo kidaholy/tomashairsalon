@@ -8,8 +8,8 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, redirect to dashboard
-    window.location.href = '/dashboard';
+    // For demo purposes, redirect to orders page
+    window.location.href = '/orders';
   };
 
   return (
@@ -17,7 +17,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="font-serif text-4xl font-bold text-primary mb-2">Tomas</h1>
-          <p className="text-gray-600">Sign in to manage your orders</p>
+          <p className="text-gray-600">Sign in to manage orders</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

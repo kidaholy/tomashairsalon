@@ -122,3 +122,31 @@ export interface MenuItem {
   categoryId: string;
   available: boolean;
 }
+
+export interface OrderItem {
+  menuItemId: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  items: OrderItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  status: 'pending' | 'completed' | 'cancelled';
+  paymentMethod: 'cash' | 'card' | 'other';
+  createdAt: string;
+  cashierName?: string;
+}
+
+export interface ReceiptData {
+  order: Order;
+  salonName: string;
+  salonAddress: string;
+  salonPhone: string;
+  receiptNumber: string;
+}

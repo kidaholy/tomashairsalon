@@ -134,9 +134,14 @@ export default function DashboardPage() {
       <header className="bg-white shadow-md">
         <div className="container mx-auto px-5 py-4 flex justify-between items-center">
           <h1 className="font-serif text-3xl font-bold text-primary">Tomas - Dashboard</h1>
-          <a href="/" className="text-gray-600 hover:text-primary transition-colors">
-            View Site
-          </a>
+          <div className="flex gap-4">
+            <a href="/orders" className="text-gray-600 hover:text-primary transition-colors">
+              Orders
+            </a>
+            <a href="/" className="text-gray-600 hover:text-primary transition-colors">
+              View Site
+            </a>
+          </div>
         </div>
       </header>
 

@@ -89,3 +89,32 @@ body {
 .animate-scroll {
   animation: scroll 2s infinite;
 }
+
+/* Print Styles for Thermal Receipt (80mm) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .receipt-container,
+  .receipt-container * {
+    visibility: visible;
+  }
+  
+  .receipt-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+    padding: 5mm;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #000;
+    background: #fff;
+  }
+  
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+}

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { SalonData, Category, MenuItem } from '@/types/salon';
+import { SalonData, Category, MenuItem, Order } from '@/types/salon';
 
 const dataFilePath = path.join(process.cwd(), 'data', 'salon-data.json');
 
@@ -85,4 +85,44 @@ export function deleteMenuItem(id: string): void {
   if (!(data as any).menuItems) return;
   (data as any).menuItems = (data as any).menuItems.filter((item: MenuItem) => item.id !== id);
   writeData(data);
+}
+
+// ========== ORDERS CRUD ==========
+
+export function getOrders(): Order[] {
+  const data = readData();
+  return (data as any).orders || [];
+}
+
+export function createOrder(order: Order): void {
+  const data = readData();
+  if (!(data as any).orders) {
+    (data as any).orders = [];
+  }
+  (data as any).orders.push(order);
+  writeData(data);
+}
+
+export function updateOrder(id: string, updatedOrder: Partial<Order>): void {
+  const data = readData();
+  if (!(data as any).orders) return;
+  const index = (data as any).orders.findIndex((o: Order) => o.id === id);
+  if (index !== -1) {
+    (data as any).orders[index] = { ...(data as any).orders[index], ...updatedOrder };
+    writeData(data);
+  }
+}
+
+export function deleteOrder(id: string): void {
+  const data = readData();
+  if (!(data as any).orders) return;
+  (data as any).orders = (data as any).orders.filter((o: Order) => o.id !== id);
+  writeData(data);
+}
+
+export function getOrderById(id: string): Order | null {
+  const data = readData();
+  if (!(data as any).orders) return null;
+  const order = (data as any).orders.find((o: Order) => o.id === id);
+  return order || null;
 }
