@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { FiHome, FiPackage, FiShoppingCart, FiLogOut } from 'react-icons/fi';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -13,9 +14,9 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: '📊' },
-    { name: 'Inventory', path: '/inventory', icon: '📦' },
-    { name: 'Orders', path: '/orders', icon: '🛒' }
+    { name: 'Dashboard', path: '/dashboard', icon: FiHome },
+    { name: 'Inventory', path: '/inventory', icon: FiPackage },
+    { name: 'Orders', path: '/orders', icon: FiShoppingCart }
   ];
 
   const isActive = (path: string) => {
@@ -47,31 +48,34 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
 
         {/* Menu */}
         <nav className="p-4 space-y-2">
-          {menuItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.path}
-              className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
-                isActive(item.path)
-                  ? 'bg-primary text-white'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-              }`}
-            >
-              <span className="text-xl">{item.icon}</span>
-              {!isCollapsed && (
-                <span className="font-medium">{item.name}</span>
-              )}
-            </Link>
-          ))}
+          {menuItems.map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <Link
+                key={index}
+                href={item.path}
+                className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
+                  isActive(item.path)
+                    ? 'bg-primary text-white'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                <IconComponent className="text-xl" />
+                {!isCollapsed && (
+                  <span className="font-medium">{item.name}</span>
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => window.location.href = '/login'}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-all w-fit"
           >
-            <span className="text-xl">🚪</span>
+            <FiLogOut className="text-xl" />
             {!isCollapsed && <span className="font-medium">Logout</span>}
           </button>
         </div>
