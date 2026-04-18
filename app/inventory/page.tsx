@@ -208,7 +208,7 @@ export default function InventoryPage() {
                       <div className="text-sm text-gray-600">{item.description}</div>
                     </td>
                     <td className="px-6 py-4 text-gray-700">{getCategoryName(item.categoryId)}</td>
-                    <td className="px-6 py-4 font-semibold text-gray-800">${item.price}</td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">{item.price} ETB</td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-sm font-semibold ${item.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                         {item.available ? 'Yes' : 'No'}
@@ -269,7 +269,7 @@ export default function InventoryPage() {
                 if (key === 'price') {
                   return (
                     <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Price (ETB)</label>
                       <input
                         type="number"
                         step="0.01"
