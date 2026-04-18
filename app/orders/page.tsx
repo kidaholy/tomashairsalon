@@ -95,8 +95,7 @@ function OrdersPageInner() {
   };
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + tax;
+  const total = subtotal;
 
   const generateOrderNumber = () => {
     const nextOrderNumber = orders.length + 1;
@@ -104,10 +103,6 @@ function OrdersPageInner() {
   };
 
   const handleCheckout = () => {
-    if (!cashierName.trim()) {
-      alert('Please enter cashier name');
-      return;
-    }
     if (cart.length === 0) {
       alert('Cart is empty');
       return;
@@ -122,7 +117,7 @@ function OrdersPageInner() {
       orderNumber,
       items: cart,
       subtotal,
-      tax,
+      tax: 0,
       total,
       status: 'completed',
       paymentMethod,
@@ -151,7 +146,119 @@ function OrdersPageInner() {
   };
 
   const printReceipt = () => {
-    window.print();
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      const receiptContent = document.querySelector('.receipt-container');
+      if (receiptContent) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Receipt</title>
+              <style>
+                body { 
+                  font-family: monospace; 
+                  font-size: 12px; 
+                  width: 80mm; 
+                  margin: 0 auto; 
+                  padding: 10px;
+                }
+                .receipt-container { 
+                  width: 100%; 
+                }
+                table { 
+                  width: 100%; 
+                  border-collapse: collapse; 
+                }
+                .text-center { 
+                  text-align: center; 
+                }
+                .text-left { 
+                  text-align: left; 
+                }
+                .text-right { 
+                  text-align: right; 
+                }
+                .border-t { 
+                  border-top: 1px solid #000; 
+                }
+                .border-b { 
+                  border-bottom: 1px solid #000; 
+                }
+                .py-1 { 
+                  padding-top: 4px; 
+                  padding-bottom: 4px; 
+                }
+                .py-2 { 
+                  padding-top: 8px; 
+                  padding-bottom: 8px; 
+                }
+                .mb-2 { 
+                  margin-bottom: 8px; 
+                }
+                .mb-4 { 
+                  margin-bottom: 16px; 
+                }
+                .mt-2 { 
+                  margin-top: 8px; 
+                }
+                .mt-4 { 
+                  margin-top: 16px; 
+                }
+                .pt-2 { 
+                  padding-top: 8px; 
+                }
+                .pt-4 { 
+                  padding-top: 16px; 
+                }
+                .font-bold { 
+                  font-weight: bold; 
+                }
+                .text-lg { 
+                  font-size: 14px; 
+                }
+                .text-xs { 
+                  font-size: 10px; 
+                }
+                .flex { 
+                  display: flex; 
+                }
+                .justify-between { 
+                  justify-content: space-between; 
+                }
+                .w-full { 
+                  width: 100%; 
+                }
+                .bg-yellow-50 { 
+                  background-color: #fefce8; 
+                  border: 1px solid #fef08a; 
+                  border-radius: 8px; 
+                  padding: 8px; 
+                }
+                .text-yellow-800 { 
+                  color: #854d0e; 
+                }
+                @media print {
+                  body { 
+                    width: 80mm; 
+                    margin: 0; 
+                    padding: 5mm; 
+                  }
+                }
+              </style>
+            </head>
+            <body>
+              ${receiptContent.innerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+          printWindow.print();
+          printWindow.close();
+        }, 250);
+      }
+    }
   };
 
   const updateOrderStatus = async (orderId: string, status: 'pending' | 'completed' | 'cancelled') => {
@@ -325,15 +432,10 @@ function OrdersPageInner() {
                     </div>
 
                     <div className="border-t pt-4 space-y-2">
-                      <div className="flex justify-between">
-                        <span>Subtotal:</span>
-                        <span>{subtotal.toFixed(2)} ETB</span>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+                        <p className="text-sm text-yellow-800 font-medium text-center">It is only for internal operation</p>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Tax (10%):</span>
-                        <span>{tax.toFixed(2)} ETB</span>
-                      </div>
-                      <div className="flex justify-between text-xl font-bold border-t pt-2">
+                      <div className="flex justify-between text-xl font-bold">
                         <span>Total:</span>
                         <span>{total.toFixed(2)} ETB</span>
                       </div>
@@ -439,13 +541,13 @@ function OrdersPageInner() {
               <table className="w-full">
                 <thead className="bg-gray-100">
                   <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Date</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Cashier</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Actions</th>
                   </tr>
                 </thead>
@@ -483,6 +585,7 @@ function OrdersPageInner() {
                     })
                     .map(order => (
                       <tr key={order.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
                         <td className="px-6 py-4">
                           {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
                         </td>
@@ -499,7 +602,6 @@ function OrdersPageInner() {
                             {order.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
                         <td className="px-6 py-4">
                           <button
                             onClick={() => deleteOrder(order.id)}
@@ -582,15 +684,10 @@ function OrdersPageInner() {
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
-              <div className="flex justify-between mb-2">
-                <span>Subtotal:</span>
-                <span>{subtotal.toFixed(2)} ETB</span>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+                <p className="text-sm text-yellow-800 font-medium text-center">It is only for internal operation</p>
               </div>
-              <div className="flex justify-between mb-2">
-                <span>Tax:</span>
-                <span>{tax.toFixed(2)} ETB</span>
-              </div>
-              <div className="flex justify-between text-xl font-bold border-t pt-2">
+              <div className="flex justify-between text-xl font-bold">
                 <span>Total:</span>
                 <span>{total.toFixed(2)} ETB</span>
               </div>
@@ -653,9 +750,6 @@ function Receipt({ order }: { order: Order }) {
       <div className="text-center mb-4">
         <h2 className="text-xl font-bold">TOMAS</h2>
         <p className="text-xs">Premium Hair Care & Styling</p>
-        <p className="text-xs">123 Beauty Street, Fashion District</p>
-        <p className="text-xs">New York, NY 10001</p>
-        <p className="text-xs">Tel: +1 (555) 123-4567</p>
       </div>
 
       <div className="border-t border-b border-gray-400 py-2 mb-2">
@@ -693,13 +787,8 @@ function Receipt({ order }: { order: Order }) {
       </div>
 
       <div className="border-t border-gray-400 pt-2 mb-2">
-        <div className="flex justify-between">
-          <span>Subtotal:</span>
-          <span>{order.subtotal.toFixed(2)} ETB</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Tax (10%):</span>
-          <span>{order.tax.toFixed(2)} ETB</span>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2 mb-2">
+          <p className="text-xs text-yellow-800 font-medium text-center">It is only for internal operation</p>
         </div>
         <div className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2">
           <span>TOTAL:</span>
