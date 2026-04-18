@@ -281,7 +281,7 @@ export default function InventoryPage() {
                     </div>
                   );
                 }
-                if (key === 'id' && editingItem) {
+                if (key === 'id') {
                   return null;
                 }
                 return (
