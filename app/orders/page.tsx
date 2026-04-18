@@ -155,19 +155,26 @@ function OrdersPageInner() {
             <head>
               <title>Receipt</title>
               <style>
+                @page {
+                  size: 80mm auto;
+                  margin: 0;
+                }
+                * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+                }
                 body { 
-                  font-family: monospace; 
-                  font-size: 12px; 
+                  font-family: 'Courier New', monospace; 
+                  font-size: 11px; 
                   width: 80mm; 
-                  margin: 0 auto; 
-                  padding: 10px;
+                  margin: 0;
+                  padding: 3mm 5mm;
+                  line-height: 1.3;
                 }
                 .receipt-container { 
-                  width: 100%; 
-                }
-                table { 
-                  width: 100%; 
-                  border-collapse: collapse; 
+                  width: 100%;
+                  max-width: 80mm;
                 }
                 .text-center { 
                   text-align: center; 
@@ -178,46 +185,69 @@ function OrdersPageInner() {
                 .text-right { 
                   text-align: right; 
                 }
-                .border-t { 
-                  border-top: 1px solid #000; 
-                }
-                .border-b { 
-                  border-bottom: 1px solid #000; 
-                }
-                .py-1 { 
-                  padding-top: 4px; 
-                  padding-bottom: 4px; 
-                }
-                .py-2 { 
-                  padding-top: 8px; 
-                  padding-bottom: 8px; 
-                }
-                .mb-2 { 
-                  margin-bottom: 8px; 
-                }
-                .mb-4 { 
-                  margin-bottom: 16px; 
-                }
-                .mt-2 { 
-                  margin-top: 8px; 
-                }
-                .mt-4 { 
-                  margin-top: 16px; 
-                }
-                .pt-2 { 
-                  padding-top: 8px; 
-                }
-                .pt-4 { 
-                  padding-top: 16px; 
-                }
                 .font-bold { 
                   font-weight: bold; 
                 }
                 .text-lg { 
-                  font-size: 14px; 
+                  font-size: 13px; 
                 }
                 .text-xs { 
-                  font-size: 10px; 
+                  font-size: 9px; 
+                }
+                .text-sm {
+                  font-size: 10px;
+                }
+                .mb-2 { 
+                  margin-bottom: 6px; 
+                }
+                .mb-4 { 
+                  margin-bottom: 10px; 
+                }
+                .mt-2 { 
+                  margin-top: 6px; 
+                }
+                .mt-4 { 
+                  margin-top: 10px; 
+                }
+                .py-1 { 
+                  padding: 2px 0; 
+                }
+                .py-2 { 
+                  padding: 4px 0; 
+                }
+                .pt-2 { 
+                  padding-top: 4px; 
+                }
+                .pt-4 { 
+                  padding-top: 8px; 
+                }
+                .border-t { 
+                  border-top: 1px dashed #000; 
+                }
+                .border-b { 
+                  border-bottom: 1px dashed #000; 
+                }
+                table { 
+                  width: 100%; 
+                  border-collapse: collapse;
+                  font-size: 10px;
+                }
+                th {
+                  text-align: left;
+                  padding: 2px 0;
+                  border-bottom: 1px dashed #000;
+                }
+                th:last-child {
+                  text-align: right;
+                }
+                td {
+                  padding: 3px 0;
+                }
+                td:last-child {
+                  text-align: right;
+                }
+                td:nth-child(2) {
+                  text-align: center;
                 }
                 .flex { 
                   display: flex; 
@@ -228,20 +258,24 @@ function OrdersPageInner() {
                 .w-full { 
                   width: 100%; 
                 }
-                .bg-yellow-50 { 
-                  background-color: #fefce8; 
-                  border: 1px solid #fef08a; 
-                  border-radius: 8px; 
-                  padding: 8px; 
-                }
-                .text-yellow-800 { 
-                  color: #854d0e; 
+                .internal-msg {
+                  background-color: #fff;
+                  border: 1px dashed #000;
+                  padding: 4px;
+                  margin: 6px 0;
+                  text-align: center;
+                  font-size: 9px;
+                  font-weight: bold;
                 }
                 @media print {
+                  @page {
+                    size: 80mm auto;
+                    margin: 0;
+                  }
                   body { 
-                    width: 80mm; 
-                    margin: 0; 
-                    padding: 5mm; 
+                    width: 80mm;
+                    margin: 0;
+                    padding: 3mm 5mm;
                   }
                 }
               </style>
@@ -787,8 +821,8 @@ function Receipt({ order }: { order: Order }) {
       </div>
 
       <div className="border-t border-gray-400 pt-2 mb-2">
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2 mb-2">
-          <p className="text-xs text-yellow-800 font-medium text-center">It is only for internal operation</p>
+        <div className="internal-msg">
+          <p>It is only for internal operation</p>
         </div>
         <div className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2">
           <span>TOTAL:</span>

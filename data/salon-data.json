@@ -286,44 +286,5 @@
       "available": true
     }
   ],
-  "orders": [
-    {
-      "id": "1776512789420",
-      "orderNumber": "#1",
-      "items": [
-        {
-          "menuItemId": "1",
-          "name": "snap",
-          "price": 350,
-          "quantity": 1
-        }
-      ],
-      "subtotal": 350,
-      "tax": 0,
-      "total": 350,
-      "status": "completed",
-      "paymentMethod": "cash",
-      "createdAt": "2026-04-18T11:46:29.420Z",
-      "cashierName": "make"
-    },
-    {
-      "id": "1776512968171",
-      "orderNumber": "#2",
-      "items": [
-        {
-          "menuItemId": "1",
-          "name": "snap",
-          "price": 350,
-          "quantity": 1
-        }
-      ],
-      "subtotal": 350,
-      "tax": 0,
-      "total": 350,
-      "status": "completed",
-      "paymentMethod": "cash",
-      "createdAt": "2026-04-18T11:49:28.171Z",
-      "cashierName": ""
-    }
-  ]
+  "orders": []
 }
