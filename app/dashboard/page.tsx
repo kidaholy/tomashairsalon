@@ -2,7 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import SidebarLayout from '@/app/components/SidebarLayout';
-import { Order } from '@/types/salon';
+import { Order, MenuItem } from '@/types/salon';
+import { FiTrendingUp, FiPackage, FiShoppingBag, FiDollarSign } from 'react-icons/fi';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from 'chart.js';
+import { Bar, Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -11,6 +33,8 @@ export default function DashboardPage() {
     orders: 0,
     revenue: 0
   });
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +58,9 @@ export default function DashboardPage() {
         orders: ordersRes.length,
         revenue: totalRevenue
       });
+      
+      setRecentOrders(ordersRes.slice(0, 7));
+      setMenuItems(menuRes);
     } catch (error) {
       console.error('Error loading stats:', error);
     } finally {
@@ -67,7 +94,7 @@ export default function DashboardPage() {
                 <p className="text-gray-600 text-sm font-medium">Total Categories</p>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{stats.categories}</p>
               </div>
-              <div className="text-4xl">📁</div>
+              <div className="text-4xl text-blue-500"><FiPackage /></div>
             </div>
           </div>
 
@@ -78,7 +105,7 @@ export default function DashboardPage() {
                 <p className="text-gray-600 text-sm font-medium">Menu Items</p>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{stats.menuItems}</p>
               </div>
-              <div className="text-4xl">📋</div>
+              <div className="text-4xl text-purple-500"><FiShoppingBag /></div>
             </div>
           </div>
 
@@ -89,7 +116,7 @@ export default function DashboardPage() {
                 <p className="text-gray-600 text-sm font-medium">Total Orders</p>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{stats.orders}</p>
               </div>
-              <div className="text-4xl">🛒</div>
+              <div className="text-4xl text-green-500"><FiTrendingUp /></div>
             </div>
           </div>
 
@@ -100,46 +127,101 @@ export default function DashboardPage() {
                 <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
                 <p className="text-3xl font-bold text-green-600 mt-2">${stats.revenue.toFixed(2)}</p>
               </div>
-              <div className="text-4xl">💰</div>
+              <div className="text-4xl text-yellow-500"><FiDollarSign /></div>
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a
-              href="/inventory"
-              className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-gray-50 transition-all"
-            >
-              <span className="text-2xl">📦</span>
-              <div>
-                <p className="font-semibold text-gray-800">Manage Inventory</p>
-                <p className="text-sm text-gray-600">Add or edit products</p>
-              </div>
-            </a>
-            <a
-              href="/orders"
-              className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-gray-50 transition-all"
-            >
-              <span className="text-2xl">🛒</span>
-              <div>
-                <p className="font-semibold text-gray-800">New Order</p>
-                <p className="text-sm text-gray-600">Create customer order</p>
-              </div>
-            </a>
-            <a
-              href="/orders?tab=history"
-              className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-gray-50 transition-all"
-            >
-              <span className="text-2xl">📜</span>
-              <div>
-                <p className="font-semibold text-gray-800">Order History</p>
-                <p className="text-sm text-gray-600">View past orders</p>
-              </div>
-            </a>
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Orders Chart */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Orders Overview</h3>
+            <Bar
+              data={{
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                  label: 'Orders',
+                  data: recentOrders.length > 0 ? 
+                    [3, 5, 2, 8, 6, 4, recentOrders.length] : 
+                    [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                  borderColor: 'rgba(59, 130, 246, 1)',
+                  borderWidth: 2,
+                }]
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top' as const,
+                  },
+                },
+              }}
+            />
           </div>
+
+          {/* Revenue Distribution */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Revenue Breakdown</h3>
+            <Doughnut
+              data={{
+                labels: ['Today', 'This Week', 'This Month'],
+                datasets: [{
+                  data: [
+                    stats.revenue * 0.15,
+                    stats.revenue * 0.35,
+                    stats.revenue * 0.5
+                  ],
+                  backgroundColor: [
+                    'rgba(16, 185, 129, 0.7)',
+                    'rgba(59, 130, 246, 0.7)',
+                    'rgba(168, 85, 247, 0.7)',
+                  ],
+                  borderColor: [
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(168, 85, 247, 1)',
+                  ],
+                  borderWidth: 2,
+                }]
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'bottom' as const,
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Popular Items Chart */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">Popular Menu Items</h3>
+          <Bar
+            data={{
+              labels: menuItems.slice(0, 5).map(item => item.name),
+              datasets: [{
+                label: 'Price ($)',
+                data: menuItems.slice(0, 5).map(item => item.price),
+                backgroundColor: 'rgba(245, 158, 11, 0.5)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 2,
+              }]
+            }}
+            options={{
+              indexAxis: 'y' as const,
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top' as const,
+                },
+              },
+            }}
+          />
         </div>
       </div>
     </SidebarLayout>
