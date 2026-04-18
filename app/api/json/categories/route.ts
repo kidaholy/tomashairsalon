@@ -4,7 +4,7 @@ import {
   createCategory, 
   updateCategory, 
   deleteCategory 
-} from '@/lib/database-orders';
+} from '@/lib/json-data';
 import { Category } from '@/types/salon';
 
 export async function GET() {

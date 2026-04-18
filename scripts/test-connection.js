@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config({ path: '.env.local' });
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URL;
 
 console.log('Testing MongoDB connection...');
 console.log('URI:', uri ? uri.substring(0, 30) + '...' : 'NOT FOUND');

@@ -4,7 +4,7 @@ import {
   createMenuItem, 
   updateMenuItem, 
   deleteMenuItem 
-} from '@/lib/database-orders';
+} from '@/lib/json-data';
 import { MenuItem } from '@/types/salon';
 
 export async function GET() {
