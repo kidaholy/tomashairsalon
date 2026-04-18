@@ -14,6 +14,12 @@ function OrdersPageInner() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   
+  // Update activeTab when URL changes
+  useEffect(() => {
+    const tab = searchParams.get('tab') as 'new' | 'history' || 'new';
+    setActiveTab(tab);
+  }, [searchParams]);
+  
   // Cart state
   const [cart, setCart] = useState<OrderItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -24,6 +30,10 @@ function OrdersPageInner() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
+  
+  // Date filter state
+  const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week' | 'month' | 'custom'>('all');
+  const [selectedDate, setSelectedDate] = useState<string>('');
 
   useEffect(() => {
     loadData();
@@ -241,7 +251,7 @@ function OrdersPageInner() {
                       <h3 className="font-bold text-lg">{item.name}</h3>
                       <p className="text-gray-600 text-sm mb-2">{item.description}</p>
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-primary">${item.price}</span>
+                        <span className="text-xl font-bold text-primary">ETB{item.price}</span>
                         <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90">
                           Add
                         </button>
@@ -267,7 +277,7 @@ function OrdersPageInner() {
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex-1">
                               <h4 className="font-semibold">{item.name}</h4>
-                              <p className="text-sm text-gray-600">${item.price} each</p>
+                              <p className="text-sm text-gray-600">ETB{item.price} each</p>
                             </div>
                             <button
                               onClick={() => removeFromCart(item.menuItemId)}
@@ -290,7 +300,7 @@ function OrdersPageInner() {
                             >
                               +
                             </button>
-                            <span className="ml-auto font-bold">${(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="ml-auto font-bold">ETB{(item.price * item.quantity).toFixed(2)}</span>
                           </div>
                         </div>
                       ))}
@@ -299,15 +309,15 @@ function OrdersPageInner() {
                     <div className="border-t pt-4 space-y-2">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                        <span>ETB{subtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Tax (10%):</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>ETB{tax.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-xl font-bold border-t pt-2">
                         <span>Total:</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>ETB{total.toFixed(2)}</span>
                       </div>
                     </div>
 
@@ -326,50 +336,192 @@ function OrdersPageInner() {
 
         {/* Order History Tab */}
         {activeTab === 'history' && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Cashier</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {orders.map(order => (
-                  <tr key={order.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
-                    <td className="px-6 py-4">
-                      {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
-                    </td>
-                    <td className="px-6 py-4">{order.cashierName || '-'}</td>
-                    <td className="px-6 py-4">{order.items.length} items</td>
-                    <td className="px-6 py-4 font-bold">${order.total.toFixed(2)}</td>
-                    <td className="px-6 py-4 capitalize">{order.paymentMethod}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                        order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-                {orders.length === 0 && (
+          <div>
+            {/* Date Filter Buttons */}
+            <div className="mb-6">
+              <div className="flex gap-3 mb-4">
+                <button
+                  onClick={() => setDateFilter('all')}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                    dateFilter === 'all'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                  }`}
+                >
+                  All Orders
+                </button>
+                <button
+                  onClick={() => setDateFilter('today')}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                    dateFilter === 'today'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                  }`}
+                >
+                  Today
+                </button>
+                <button
+                  onClick={() => setDateFilter('week')}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                    dateFilter === 'week'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                  }`}
+                >
+                  This Week
+                </button>
+                <button
+                  onClick={() => setDateFilter('month')}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                    dateFilter === 'month'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                  }`}
+                >
+                  This Month
+                </button>
+                <button
+                  onClick={() => setDateFilter('custom')}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                    dateFilter === 'custom'
+                      ? 'bg-primary text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                  }`}
+                >
+                  Custom Date
+                </button>
+              </div>
+
+              {/* Custom Date Picker */}
+              {dateFilter === 'custom' && (
+                <div className="bg-white p-4 rounded-lg shadow-sm flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700">Select Date:</label>
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    />
+                  </div>
+                  {selectedDate && (
+                    <button
+                      onClick={() => setSelectedDate('')}
+                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Orders Table */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-100">
                   <tr>
-                    <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
-                      No orders yet
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Cashier</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {orders
+                    .filter(order => {
+                      const orderDate = new Date(order.createdAt);
+                      const now = new Date();
+                      
+                      if (dateFilter === 'today') {
+                        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        return orderDate >= todayStart;
+                      }
+                      
+                      if (dateFilter === 'week') {
+                        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        const weekStart = new Date(todayStart);
+                        weekStart.setDate(weekStart.getDate() - todayStart.getDay());
+                        return orderDate >= weekStart;
+                      }
+                      
+                      if (dateFilter === 'month') {
+                        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                        return orderDate >= monthStart;
+                      }
+                      
+                      if (dateFilter === 'custom' && selectedDate) {
+                        const selected = new Date(selectedDate);
+                        const selectedStart = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate());
+                        const selectedEnd = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate(), 23, 59, 59, 999);
+                        return orderDate >= selectedStart && orderDate <= selectedEnd;
+                      }
+                      
+                      return true; // 'all'
+                    })
+                    .map(order => (
+                      <tr key={order.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
+                        <td className="px-6 py-4">
+                          {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
+                        </td>
+                        <td className="px-6 py-4">{order.cashierName || '-'}</td>
+                        <td className="px-6 py-4">{order.items.length} items</td>
+                        <td className="px-6 py-4 font-bold">ETB{order.total.toFixed(2)}</td>
+                        <td className="px-6 py-4 capitalize">{order.paymentMethod}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                            order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {order.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  {orders.filter(order => {
+                    const orderDate = new Date(order.createdAt);
+                    const now = new Date();
+                    
+                    if (dateFilter === 'today') {
+                      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                      return orderDate >= todayStart;
+                    }
+                    
+                    if (dateFilter === 'week') {
+                      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                      const weekStart = new Date(todayStart);
+                      weekStart.setDate(weekStart.getDate() - todayStart.getDay());
+                      return orderDate >= weekStart;
+                    }
+                    
+                    if (dateFilter === 'month') {
+                      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                      return orderDate >= monthStart;
+                    }
+                    
+                    if (dateFilter === 'custom' && selectedDate) {
+                      const selected = new Date(selectedDate);
+                      const selectedStart = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate());
+                      const selectedEnd = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate(), 23, 59, 59, 999);
+                      return orderDate >= selectedStart && orderDate <= selectedEnd;
+                    }
+                    
+                    return true;
+                  }).length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
+                        No orders found for this period
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
@@ -404,15 +556,15 @@ function OrdersPageInner() {
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
               <div className="flex justify-between mb-2">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>ETB{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>Tax:</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>ETB{tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xl font-bold border-t pt-2">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>ETB{total.toFixed(2)}</span>
               </div>
             </div>
 
@@ -505,7 +657,7 @@ function Receipt({ order }: { order: Order }) {
               <tr key={index}>
                 <td className="py-1">{item.name}</td>
                 <td className="text-center py-1">{item.quantity}</td>
-                <td className="text-right py-1">${(item.price * item.quantity).toFixed(2)}</td>
+                <td className="text-right py-1">ETB{(item.price * item.quantity).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
@@ -515,15 +667,15 @@ function Receipt({ order }: { order: Order }) {
       <div className="border-t border-gray-400 pt-2 mb-2">
         <div className="flex justify-between">
           <span>Subtotal:</span>
-          <span>${order.subtotal.toFixed(2)}</span>
+          <span>ETB{order.subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span>Tax (10%):</span>
-          <span>${order.tax.toFixed(2)}</span>
+          <span>ETB{order.tax.toFixed(2)}</span>
         </div>
         <div className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2">
           <span>TOTAL:</span>
-          <span>${order.total.toFixed(2)}</span>
+          <span>ETB{order.total.toFixed(2)}</span>
         </div>
       </div>
 
