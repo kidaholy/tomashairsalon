@@ -18,6 +18,8 @@ const COLLECTIONS = {
 export async function getSalonData(): Promise<SalonData | null> {
   try {
     const client = await clientPromise;
+    if (!client) return null; // MongoDB not configured
+    
     const db = client.db(DB_NAME);
 
     const [salon, navigation, hero, about, services, team, testimonials, gallery, contact, footer] =
@@ -49,7 +51,7 @@ export async function getSalonData(): Promise<SalonData | null> {
       footer: footer as unknown as SalonData['footer'],
     };
   } catch (error) {
-    console.error('Error fetching salon data from MongoDB:', error);
+    // Silently fail - will fallback to JSON
     return null;
   }
 }
@@ -57,6 +59,8 @@ export async function getSalonData(): Promise<SalonData | null> {
 export async function initializeDatabase(data: SalonData): Promise<void> {
   try {
     const client = await clientPromise;
+    if (!client) throw new Error('MongoDB not configured');
+    
     const db = client.db(DB_NAME);
 
     // Clear existing data
@@ -97,30 +101,35 @@ export async function initializeDatabase(data: SalonData): Promise<void> {
 // Service CRUD operations
 export async function getServices(): Promise<Service[]> {
   const client = await clientPromise;
+  if (!client) return [];
   const db = client.db(DB_NAME);
   return (await db.collection(COLLECTIONS.services).find({}).toArray()) as unknown as Service[];
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
   const client = await clientPromise;
+  if (!client) return null;
   const db = client.db(DB_NAME);
   return db.collection(COLLECTIONS.services).findOne({ id }) as Promise<Service | null>;
 }
 
 export async function createService(service: Service): Promise<void> {
   const client = await clientPromise;
+  if (!client) throw new Error('MongoDB not configured');
   const db = client.db(DB_NAME);
   await db.collection(COLLECTIONS.services).insertOne(service as any);
 }
 
 export async function updateService(id: string, service: Partial<Service>): Promise<void> {
   const client = await clientPromise;
+  if (!client) throw new Error('MongoDB not configured');
   const db = client.db(DB_NAME);
   await db.collection(COLLECTIONS.services).updateOne({ id }, { $set: service as any });
 }
 
 export async function deleteService(id: string): Promise<void> {
   const client = await clientPromise;
+  if (!client) throw new Error('MongoDB not configured');
   const db = client.db(DB_NAME);
   await db.collection(COLLECTIONS.services).deleteOne({ id });
 }
@@ -128,6 +137,7 @@ export async function deleteService(id: string): Promise<void> {
 // Team CRUD operations
 export async function getTeamMembers(): Promise<TeamMember[]> {
   const client = await clientPromise;
+  if (!client) return [];
   const db = client.db(DB_NAME);
   return (await db.collection(COLLECTIONS.team).find({}).toArray()) as unknown as TeamMember[];
 }
@@ -135,6 +145,7 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
 // Testimonial CRUD operations
 export async function getTestimonials(): Promise<Testimonial[]> {
   const client = await clientPromise;
+  if (!client) return [];
   const db = client.db(DB_NAME);
   return (await db.collection(COLLECTIONS.testimonials).find({}).toArray()) as unknown as Testimonial[];
 }
@@ -142,6 +153,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 // Gallery CRUD operations
 export async function getGalleryItems(): Promise<GalleryItem[]> {
   const client = await clientPromise;
+  if (!client) return [];
   const db = client.db(DB_NAME);
   return (await db.collection(COLLECTIONS.gallery).find({}).toArray()) as unknown as GalleryItem[];
 }
