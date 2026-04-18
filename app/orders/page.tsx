@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Category, MenuItem, Order, OrderItem } from '@/types/salon';
 import SidebarLayout from '@/app/components/SidebarLayout';
 
-export default function OrdersPage() {
+function OrdersPageInner() {
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') as 'new' | 'history' || 'new';
   const [activeTab, setActiveTab] = useState<'new' | 'history'>(initialTab);
@@ -543,5 +543,13 @@ function Receipt({ order }: { order: Order }) {
         <p className="text-xs mt-1">Please come again</p>
       </div>
     </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <OrdersPageInner />
+    </Suspense>
   );
 }
