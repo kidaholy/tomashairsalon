@@ -99,9 +99,8 @@ function OrdersPageInner() {
   const total = subtotal + tax;
 
   const generateOrderNumber = () => {
-    const date = new Date();
-    const timestamp = date.getTime().toString().slice(-6);
-    return `ORD-${timestamp}`;
+    const nextOrderNumber = orders.length + 1;
+    return `#${nextOrderNumber}`;
   };
 
   const handleCheckout = () => {
@@ -251,7 +250,7 @@ function OrdersPageInner() {
                       <h3 className="font-bold text-lg">{item.name}</h3>
                       <p className="text-gray-600 text-sm mb-2">{item.description}</p>
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-primary">ETB{item.price}</span>
+                        <span className="text-xl font-bold text-primary">{item.price} ETB</span>
                         <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90">
                           Add
                         </button>
@@ -277,7 +276,7 @@ function OrdersPageInner() {
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex-1">
                               <h4 className="font-semibold">{item.name}</h4>
-                              <p className="text-sm text-gray-600">ETB{item.price} each</p>
+                              <p className="text-sm text-gray-600">{item.price} ETB each</p>
                             </div>
                             <button
                               onClick={() => removeFromCart(item.menuItemId)}
@@ -300,7 +299,7 @@ function OrdersPageInner() {
                             >
                               +
                             </button>
-                            <span className="ml-auto font-bold">ETB{(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="ml-auto font-bold">{(item.price * item.quantity).toFixed(2)} ETB</span>
                           </div>
                         </div>
                       ))}
@@ -309,15 +308,15 @@ function OrdersPageInner() {
                     <div className="border-t pt-4 space-y-2">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span>ETB{subtotal.toFixed(2)}</span>
+                        <span>{subtotal.toFixed(2)} ETB</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Tax (10%):</span>
-                        <span>ETB{tax.toFixed(2)}</span>
+                        <span>{tax.toFixed(2)} ETB</span>
                       </div>
                       <div className="flex justify-between text-xl font-bold border-t pt-2">
                         <span>Total:</span>
-                        <span>ETB{total.toFixed(2)}</span>
+                        <span>{total.toFixed(2)} ETB</span>
                       </div>
                     </div>
 
@@ -421,13 +420,13 @@ function OrdersPageInner() {
               <table className="w-full">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Date</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Cashier</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Payment</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -464,13 +463,12 @@ function OrdersPageInner() {
                     })
                     .map(order => (
                       <tr key={order.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
                         <td className="px-6 py-4">
                           {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
                         </td>
                         <td className="px-6 py-4">{order.cashierName || '-'}</td>
                         <td className="px-6 py-4">{order.items.length} items</td>
-                        <td className="px-6 py-4 font-bold">ETB{order.total.toFixed(2)}</td>
+                        <td className="px-6 py-4 font-bold">{order.total.toFixed(2)} ETB</td>
                         <td className="px-6 py-4 capitalize">{order.paymentMethod}</td>
                         <td className="px-6 py-4">
                           <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -481,6 +479,7 @@ function OrdersPageInner() {
                             {order.status}
                           </span>
                         </td>
+                        <td className="px-6 py-4 font-semibold">{order.orderNumber}</td>
                       </tr>
                     ))}
                   {orders.filter(order => {
@@ -556,15 +555,15 @@ function OrdersPageInner() {
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
               <div className="flex justify-between mb-2">
                 <span>Subtotal:</span>
-                <span>ETB{subtotal.toFixed(2)}</span>
+                <span>{subtotal.toFixed(2)} ETB</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>Tax:</span>
-                <span>ETB{tax.toFixed(2)}</span>
+                <span>{tax.toFixed(2)} ETB</span>
               </div>
               <div className="flex justify-between text-xl font-bold border-t pt-2">
                 <span>Total:</span>
-                <span>ETB{total.toFixed(2)}</span>
+                <span>{total.toFixed(2)} ETB</span>
               </div>
             </div>
 
@@ -657,7 +656,7 @@ function Receipt({ order }: { order: Order }) {
               <tr key={index}>
                 <td className="py-1">{item.name}</td>
                 <td className="text-center py-1">{item.quantity}</td>
-                <td className="text-right py-1">ETB{(item.price * item.quantity).toFixed(2)}</td>
+                <td className="text-right py-1">{(item.price * item.quantity).toFixed(2)} ETB</td>
               </tr>
             ))}
           </tbody>
@@ -667,15 +666,15 @@ function Receipt({ order }: { order: Order }) {
       <div className="border-t border-gray-400 pt-2 mb-2">
         <div className="flex justify-between">
           <span>Subtotal:</span>
-          <span>ETB{order.subtotal.toFixed(2)}</span>
+          <span>{order.subtotal.toFixed(2)} ETB</span>
         </div>
         <div className="flex justify-between">
           <span>Tax (10%):</span>
-          <span>ETB{order.tax.toFixed(2)}</span>
+          <span>{order.tax.toFixed(2)} ETB</span>
         </div>
         <div className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2">
           <span>TOTAL:</span>
-          <span>ETB{order.total.toFixed(2)}</span>
+          <span>{order.total.toFixed(2)} ETB</span>
         </div>
       </div>
 

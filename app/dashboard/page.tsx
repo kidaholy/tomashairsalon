@@ -209,7 +209,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
-                <p className="text-3xl font-bold text-green-600 mt-2">${stats.revenue.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-green-600 mt-2">{stats.revenue.toFixed(2)} ETB</p>
               </div>
               <div className="text-4xl text-yellow-500"><FiDollarSign /></div>
             </div>

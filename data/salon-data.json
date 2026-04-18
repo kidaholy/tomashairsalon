@@ -362,6 +362,25 @@
       "paymentMethod": "other",
       "createdAt": "2026-04-18T11:14:34.885Z",
       "cashierName": "membere"
+    },
+    {
+      "id": "1776511875629",
+      "orderNumber": "#5",
+      "items": [
+        {
+          "menuItemId": "1",
+          "name": "snap",
+          "price": 350,
+          "quantity": 2
+        }
+      ],
+      "subtotal": 700,
+      "tax": 70,
+      "total": 770,
+      "status": "completed",
+      "paymentMethod": "cash",
+      "createdAt": "2026-04-18T11:31:15.629Z",
+      "cashierName": "memebere"
     }
   ]
 }
