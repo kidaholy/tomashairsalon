@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Category, MenuItem, Order, OrderItem } from '@/types/salon';
-import Link from 'next/link';
+import SidebarLayout from '@/app/components/SidebarLayout';
 
 export default function OrdersPage() {
-  const [activeTab, setActiveTab] = useState<'new' | 'history'>('new');
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') as 'new' | 'history' || 'new';
+  const [activeTab, setActiveTab] = useState<'new' | 'history'>(initialTab);
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -167,43 +170,15 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-md print:hidden">
-        <div className="container mx-auto px-5 py-4 flex justify-between items-center">
-          <h1 className="font-serif text-3xl font-bold text-primary">Tomas - Order Management</h1>
-          <div className="flex gap-4">
-            <Link href="/dashboard" className="text-gray-600 hover:text-primary transition-colors">
-              Dashboard
-            </Link>
-            <Link href="/" className="text-gray-600 hover:text-primary transition-colors">
-              View Site
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-5 py-8 print:hidden">
-        <div className="flex gap-4 mb-8">
-          <button
-            onClick={() => setActiveTab('new')}
-            className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-              activeTab === 'new'
-                ? 'bg-primary text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            New Order
-          </button>
-          <button
-            onClick={() => setActiveTab('history')}
-            className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-              activeTab === 'history'
-                ? 'bg-primary text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Order History ({orders.length})
-          </button>
+    <SidebarLayout>
+      <div className="p-8 print:hidden">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">
+            {activeTab === 'new' ? 'New Order' : 'Order History'}
+          </h2>
+          <p className="text-gray-600 mt-2">
+            {activeTab === 'new' ? 'Create a new order for your customer' : 'View and manage all past orders'}
+          </p>
         </div>
 
         {/* New Order Tab */}
@@ -487,7 +462,7 @@ export default function OrdersPage() {
           </div>
         </div>
       )}
-    </div>
+    </SidebarLayout>
   );
 }
 

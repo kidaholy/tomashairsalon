@@ -1,9 +1,22 @@
-# Order Management System
+# Order & Inventory Management System
 
 ## Overview
-The Tomas Hair Salon now has a complete **Order Management System** with thermal printer receipt support (80mm).
+The Tomas Hair Salon now has a complete **Management System** with a professional sidebar navigation, including inventory management, order processing, and thermal printer receipt support (80mm).
+
+## Navigation Structure
+
+The application uses a **sidebar menu** with two main sections:
+
+### 📦 Inventory Management
+- **Categories** - Manage product/service categories
+- **Menu Items** - Manage services, products, and pricing
+
+### 🛒 Order Management
+- **New Order** - Create new orders for customers
+- **Order History** - View and manage all past orders
 
 ## Features
+✅ **Professional Sidebar Navigation** - Collapsible sidebar with clear menu structure
 ✅ **New Order Creation** - Cashiers can select items and create orders
 ✅ **Shopping Cart** - Add/remove items with quantity control
 ✅ **Order History** - View all past orders with details
@@ -11,16 +24,35 @@ The Tomas Hair Salon now has a complete **Order Management System** with thermal
 ✅ **Thermal Receipt** - 80mm formatted receipt for thermal printers
 ✅ **Tax Calculation** - Automatic 10% tax calculation
 ✅ **Order Tracking** - Track order status (pending, completed, cancelled)
+✅ **Category Management** - Organize items into categories
+✅ **Menu Management** - Add, edit, and delete services/products
 
 ## How to Access
 
-### For Cashiers
-1. Go to: `http://localhost:3000/orders`
-2. Or login at: `http://localhost:3000/login` (redirects to orders page)
+### Main Pages
+- **Dashboard (Inventory)**: `http://localhost:3000/dashboard`
+  - Categories management
+  - Menu items management
+- **Orders**: `http://localhost:3000/orders`
+  - New order creation
+  - Order history
+- **Login**: `http://localhost:3000/login` (redirects to orders page)
 
-### For Admin
-1. Go to: `http://localhost:3000/dashboard`
-2. Click "Orders" link in the header to access order management
+### Using the Sidebar
+
+The sidebar is always visible and provides quick navigation:
+
+1. **Inventory Management Section**
+   - Click "Categories" to manage product/service categories
+   - Click "Menu Items" to manage your services and pricing
+
+2. **Order Management Section**
+   - Click "New Order" to create a new customer order
+   - Click "Order History" to view all past orders
+
+3. **Sidebar Controls**
+   - Click the arrow (←/→) to collapse/expand the sidebar
+   - Click "View Website" to see the customer-facing site
 
 ## Using the Order System
 
@@ -154,8 +186,28 @@ DELETE /api/json/orders?id=xxx    # Delete order
 
 - **Home Page**: `http://localhost:3000/`
 - **Login**: `http://localhost:3000/login` → Redirects to Orders
-- **Orders**: `http://localhost:3000/orders` → Order management
-- **Dashboard**: `http://localhost:3000/dashboard` → Menu/Category management
+- **Dashboard/Inventory**: `http://localhost:3000/dashboard` → Categories & Menu Items
+- **Orders**: `http://localhost:3000/orders` → New Order & Order History
+
+### Sidebar Menu Structure
+
+```
+┌─────────────────────────┐
+│    Tomas           [←]  │
+├─────────────────────────┤
+│                         │
+│ INVENTORY MANAGEMENT    │
+│ 📁 Categories          │
+│ 📋 Menu Items          │
+│                         │
+│ ORDER MANAGEMENT        │
+│ 🛒 New Order           │
+│ 📜 Order History       │
+│                         │
+├─────────────────────────┤
+│ 🏠 View Website        │
+└─────────────────────────┘
+```
 
 ## Workflow
 

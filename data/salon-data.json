@@ -305,6 +305,44 @@
       "paymentMethod": "cash",
       "createdAt": "2026-04-18T10:22:14.057Z",
       "cashierName": "wubitu"
+    },
+    {
+      "id": "1776508243681",
+      "orderNumber": "ORD-243681",
+      "items": [
+        {
+          "menuItemId": "1",
+          "name": "snap",
+          "price": 350,
+          "quantity": 10
+        }
+      ],
+      "subtotal": 3500,
+      "tax": 350,
+      "total": 3850,
+      "status": "completed",
+      "paymentMethod": "other",
+      "createdAt": "2026-04-18T10:30:43.681Z",
+      "cashierName": "mak"
+    },
+    {
+      "id": "1776508811643",
+      "orderNumber": "ORD-811643",
+      "items": [
+        {
+          "menuItemId": "1",
+          "name": "snap",
+          "price": 350,
+          "quantity": 30
+        }
+      ],
+      "subtotal": 10500,
+      "tax": 1050,
+      "total": 11550,
+      "status": "completed",
+      "paymentMethod": "cash",
+      "createdAt": "2026-04-18T10:40:11.643Z",
+      "cashierName": "k"
     }
   ]
 }
