@@ -5,7 +5,7 @@ import {
   updateOrder, 
   deleteOrder,
   getOrderById
-} from '@/lib/json-data';
+} from '@/lib/memory-data';
 import { Order } from '@/types/salon';
 
 export async function GET(request: NextRequest) {
