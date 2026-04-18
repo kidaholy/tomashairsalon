@@ -48,13 +48,18 @@ function OrdersPageInner() {
         fetch('/api/json/orders').then(r => r.json()),
       ]);
 
-      setCategories(categoriesRes);
-      setMenuItems(menuRes);
-      setOrders(ordersRes.sort((a: Order, b: Order) => 
+      // Ensure we always have arrays
+      setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
+      setMenuItems(Array.isArray(menuRes) ? menuRes : []);
+      setOrders(Array.isArray(ordersRes) ? ordersRes.sort((a: Order, b: Order) => 
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      ));
+      ) : []);
     } catch (error) {
       console.error('Error loading data:', error);
+      // Set empty arrays on error
+      setCategories([]);
+      setMenuItems([]);
+      setOrders([]);
     } finally {
       setLoading(false);
     }

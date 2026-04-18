@@ -53,24 +53,38 @@ export default function DashboardPage() {
         fetch('/api/json/orders').then(r => r.json()),
       ]);
 
-      const totalRevenue = ordersRes.reduce((sum: number, order: Order) => sum + order.total, 0);
+      // Ensure we always have arrays
+      const categories = Array.isArray(categoriesRes) ? categoriesRes : [];
+      const menu = Array.isArray(menuRes) ? menuRes : [];
+      const orders = Array.isArray(ordersRes) ? ordersRes : [];
+
+      const totalRevenue = orders.reduce((sum: number, order: Order) => sum + order.total, 0);
 
       setStats({
-        categories: categoriesRes.length,
-        menuItems: menuRes.length,
-        orders: ordersRes.length,
+        categories: categories.length,
+        menuItems: menu.length,
+        orders: orders.length,
         revenue: totalRevenue
       });
       
       // Sort orders by date (newest first)
-      const sortedOrders = ordersRes.sort((a: Order, b: Order) => 
+      const sortedOrders = orders.sort((a: Order, b: Order) => 
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       
       setRecentOrders(sortedOrders);
-      setMenuItems(menuRes);
+      setMenuItems(menu);
     } catch (error) {
       console.error('Error loading stats:', error);
+      // Set defaults on error
+      setStats({
+        categories: 0,
+        menuItems: 0,
+        orders: 0,
+        revenue: 0
+      });
+      setRecentOrders([]);
+      setMenuItems([]);
     } finally {
       setLoading(false);
     }

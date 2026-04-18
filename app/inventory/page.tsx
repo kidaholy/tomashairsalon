@@ -27,10 +27,14 @@ export default function InventoryPage() {
         fetch('/api/json/menu').then(r => r.json()),
       ]);
 
-      setCategories(categoriesRes);
-      setMenuItems(menuRes);
+      // Ensure we always have arrays
+      setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
+      setMenuItems(Array.isArray(menuRes) ? menuRes : []);
     } catch (error) {
       console.error('Error loading data:', error);
+      // Set empty arrays on error
+      setCategories([]);
+      setMenuItems([]);
     } finally {
       setLoading(false);
     }
