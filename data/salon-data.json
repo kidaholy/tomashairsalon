@@ -6,12 +6,30 @@
     "established": 2008
   },
   "navigation": [
-    { "label": "Home", "href": "#home" },
-    { "label": "About", "href": "#about" },
-    { "label": "Services", "href": "#services" },
-    { "label": "Gallery", "href": "#gallery" },
-    { "label": "Team", "href": "#team" },
-    { "label": "Contact", "href": "#contact" }
+    {
+      "label": "Home",
+      "href": "#home"
+    },
+    {
+      "label": "About",
+      "href": "#about"
+    },
+    {
+      "label": "Services",
+      "href": "#services"
+    },
+    {
+      "label": "Gallery",
+      "href": "#gallery"
+    },
+    {
+      "label": "Team",
+      "href": "#team"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
   ],
   "hero": {
     "title": "Order Management",
@@ -26,9 +44,18 @@
     "description1": "Welcome to Luxe Hair Salon, where beauty meets expertise. With over 15 years of experience, our team of professional stylists is dedicated to creating stunning transformations that enhance your natural beauty.",
     "description2": "We use only premium products and cutting-edge techniques to ensure you leave our salon feeling confident and radiant. Your satisfaction is our passion.",
     "stats": [
-      { "number": "15+", "label": "Years Experience" },
-      { "number": "5000+", "label": "Happy Clients" },
-      { "number": "20+", "label": "Expert Stylists" }
+      {
+        "number": "15+",
+        "label": "Years Experience"
+      },
+      {
+        "number": "5000+",
+        "label": "Happy Clients"
+      },
+      {
+        "number": "20+",
+        "label": "Expert Stylists"
+      }
     ]
   },
   "services": [
@@ -87,7 +114,11 @@
       "name": "Sarah Johnson",
       "role": "Senior Stylist",
       "bio": "15+ years experience in cutting and coloring",
-      "specialties": ["Haircuts", "Coloring", "Styling"],
+      "specialties": [
+        "Haircuts",
+        "Coloring",
+        "Styling"
+      ],
       "image": "/images/team/sarah.jpg"
     },
     {
@@ -95,7 +126,11 @@
       "name": "Emma Williams",
       "role": "Color Specialist",
       "bio": "Expert in balayage and creative color",
-      "specialties": ["Balayage", "Highlights", "Creative Color"],
+      "specialties": [
+        "Balayage",
+        "Highlights",
+        "Creative Color"
+      ],
       "image": "/images/team/emma.jpg"
     },
     {
@@ -103,7 +138,11 @@
       "name": "Michael Chen",
       "role": "Hair Therapist",
       "bio": "Specialist in hair restoration treatments",
-      "specialties": ["Treatments", "Restoration", "Keratin"],
+      "specialties": [
+        "Treatments",
+        "Restoration",
+        "Keratin"
+      ],
       "image": "/images/team/michael.jpg"
     },
     {
@@ -111,7 +150,11 @@
       "name": "Olivia Brown",
       "role": "Bridal Expert",
       "bio": "Creating perfect bridal looks for 10+ years",
-      "specialties": ["Bridal", "Updos", "Special Events"],
+      "specialties": [
+        "Bridal",
+        "Updos",
+        "Special Events"
+      ],
       "image": "/images/team/olivia.jpg"
     }
   ],
@@ -139,12 +182,42 @@
     }
   ],
   "gallery": [
-    { "id": 1, "title": "Balayage Transformation", "category": "Color", "image": "/images/gallery/1.jpg" },
-    { "id": 2, "title": "Modern Bob Cut", "category": "Haircut", "image": "/images/gallery/2.jpg" },
-    { "id": 3, "title": "Bridal Updo", "category": "Bridal", "image": "/images/gallery/3.jpg" },
-    { "id": 4, "title": "Vivid Color", "category": "Color", "image": "/images/gallery/4.jpg" },
-    { "id": 5, "title": "Extensions", "category": "Extensions", "image": "/images/gallery/5.jpg" },
-    { "id": 6, "title": "Keratin Results", "category": "Treatment", "image": "/images/gallery/6.jpg" }
+    {
+      "id": 1,
+      "title": "Balayage Transformation",
+      "category": "Color",
+      "image": "/images/gallery/1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Modern Bob Cut",
+      "category": "Haircut",
+      "image": "/images/gallery/2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Bridal Updo",
+      "category": "Bridal",
+      "image": "/images/gallery/3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Vivid Color",
+      "category": "Color",
+      "image": "/images/gallery/4.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Extensions",
+      "category": "Extensions",
+      "image": "/images/gallery/5.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Keratin Results",
+      "category": "Treatment",
+      "image": "/images/gallery/6.jpg"
+    }
   ],
   "contact": {
     "title": "Book Your Appointment",
@@ -164,15 +237,53 @@
   "footer": {
     "description": "Premium hair care services since 2008",
     "socialLinks": [
-      { "platform": "Facebook", "url": "#" },
-      { "platform": "Instagram", "url": "#" },
-      { "platform": "Twitter", "url": "#" }
+      {
+        "platform": "Facebook",
+        "url": "#"
+      },
+      {
+        "platform": "Instagram",
+        "url": "#"
+      },
+      {
+        "platform": "Twitter",
+        "url": "#"
+      }
     ],
     "quickLinks": [
-      { "label": "About Us", "href": "#about" },
-      { "label": "Services", "href": "#services" },
-      { "label": "Gallery", "href": "#gallery" },
-      { "label": "Contact", "href": "#contact" }
+      {
+        "label": "About Us",
+        "href": "#about"
+      },
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Gallery",
+        "href": "#gallery"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact"
+      }
     ]
-  }
+  },
+  "categories": [
+    {
+      "id": "1",
+      "name": "hair cut",
+      "description": "the hair cut styles"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "1",
+      "name": "snap",
+      "description": "hair line thick",
+      "price": 350,
+      "categoryId": "1",
+      "available": true
+    }
+  ]
 }
